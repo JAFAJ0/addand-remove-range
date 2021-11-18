@@ -45,33 +45,25 @@ class RangeList {
         else {
             const l = this.rangeList.findIndex((element) => range[0] <= element);
             const r = this.rangeList.findIndex((element) => range[1] <= element);
+            let part1;let part2;
             if (l % 2 === 0) {
-                if (r % 2 == 0) {
-                    if (range[1] !== this.rangeList[r]) {
-                        this.rangeList = this.rangeList.slice(0, l).concat(range).concat(this.rangeList.slice(r));
-                    }
-                    else {
-                        this.rangeList = this.rangeList.slice(0, l).concat(range[0]).concat(this.rangeList.slice(r + 1));
-                    }
+                part1=this.rangeList.slice(0,l).concat(range[0]);
+            }
+            else {
+                part1=this.rangeList.slice(0,l);
+            }
+            if (r % 2 === 0) {
+                if(range[1]===this.rangeList[r]){
+                    part2=this.rangeList.slice(r+1);
                 }
-                else {
-                    this.rangeList = this.rangeList.slice(0, l).concat(range[0]).concat(this.rangeList.slice(r));
+                else{
+                    part2=[range[1]].concat(this.rangeList.slice(r));
                 }
             }
-            else if (l % 2 !== 0) {
-                if (r % 2 != 0) {
-                    this.rangeList = this.rangeList.slice(0, l).concat(this.rangeList.slice(r));
-                }
-                else {
-                    if (range[1] !== this.rangeList[r]) {
-                        this.rangeList = this.rangeList.slice(0, l).concat(range[1]).concat(this.rangeList.slice(r));
-                    }
-                    else {
-                        this.rangeList = this.rangeList.slice(0, l).concat(this.rangeList.slice(r + 1));
-                    }
-
-                }
+            else {
+                part2=this.rangeList.slice(r);
             }
+            this.rangeList=part1.concat(part2);
         }
     }
     /**
@@ -108,30 +100,25 @@ class RangeList {
         else if (range[0] !== range[1]) {
             const l = this.rangeList.findIndex((element) => range[0] <= element);
             const r = this.rangeList.findIndex((element) => range[1] <= element);
-            if (l === 0) {
-                if (r % 2 === 0) {
-                    this.rangeList = this.rangeList.slice(r);
+            let part1;let part2;
+            if(l%2==0){
+                part1= part1=this.rangeList.slice(0,l);
+            }
+            else{
+                part1=this.rangeList.slice(0,l).concat(range[0]);
+            }
+            if (r % 2 === 0) {
+                part2=this.rangeList.slice(r);
+            }
+            else {
+                if(range[1]===this.rangeList[r]){
+                    part2=this.rangeList.slice(r);
                 }
-                else {
-                    this.rangeList = [range[1]].concat(this.rangeList.slice(r));
+                else{
+                    part2=[range[1]].concat(this.rangeList.slice(r));
                 }
             }
-            else if (l > 0 && l % 2 === 0) {
-                if (r % 2 === 0) {
-                    this.rangeList = this.rangeList.slice(0, l).concat(this.rangeList.slice(r));
-                }
-                else {
-                    this.rangeList = this.rangeList.slice(0, l).concat(range[1]).concat(this.rangeList.slice(r));
-                }
-            }
-            else if (l > 0 && l % 2 !== 0) {
-                if (r % 2 === 0) {
-                    this.rangeList = this.rangeList.slice(0, l).concat(range[0]).concat(this.rangeList.slice(r));
-                }
-                else {
-                    this.rangeList = this.rangeList.slice(0, l).concat(range).concat(this.rangeList.slice(r));
-                }
-            }
+            this.rangeList=part1.concat(part2);
         }
     }
     /**
@@ -141,8 +128,7 @@ class RangeList {
     print() {
         let res = "";
         for (let i = 0; i < this.rangeList.length; i++) {
-            let str = `[${this.rangeList[i]}, ${this.rangeList[i + 1]}) `;
-            res = res.concat(str);
+            res = res.concat(`[${this.rangeList[i]}, ${this.rangeList[i + 1]}) `);
             i++;
         }
         console.log(res.trim());
